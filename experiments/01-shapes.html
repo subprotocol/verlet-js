@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Verlet Shapes - Sub Protocol</title>
+	<meta name="author" content="Sub Protocol" />
+	<meta charset="UTF-8" />
+	<script type="text/javascript" src="../js/common/vec2.js"></script>
+	<script type="text/javascript" src="../js/common/particle.js"></script>
+	<script type="text/javascript" src="../js/common/constraint.js"></script>
+	<script type="text/javascript" src="../js/common/simulation.js"></script>
+</head>
+<body>
+	<canvas id="scratch" style="width: 500px; height: 300px; border: 1px solid #f00;"></canvas>
+	<script type="text/javascript">
+
+	window.onload = function() {
+		var canvas = document.getElementById("scratch");
+
+		// canvas dimensions
+		var width = parseInt(canvas.style.width);
+		var height = parseInt(canvas.style.height);
+
+		// retina
+		var dpr = window.devicePixelRatio || 1;
+		canvas.width = width*dpr;
+		canvas.height = height*dpr;
+		canvas.getContext("2d").scale(dpr, dpr);
+
+		// simulation
+		var sim = new VerletSimulation(width, height, canvas);
+		sim.tire(new Vec2(100,50), 50, 30, 0.3, 0.9);
+		sim.tire(new Vec2(250,50), 70, 7, 0.1, 0.2);	
+		sim.tire(new Vec2(400,50), 70, 3, 1, 1);
+
+		// animation loop
+		var loop = function() {
+			sim.frame(16);
+			sim.draw();
+			requestAnimFrame(loop);
+		};
+
+		loop();
+	};
+	
+	
+	</script>
+</body>
+</html>
