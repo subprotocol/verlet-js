@@ -1,9 +1,8 @@
 
 
-function Particle(pos, mass) {
+function Particle(pos) {
 	this.pos = (new Vec2()).mutableSet(pos);
 	this.lastPos = (new Vec2()).mutableSet(pos);
-	this.mass = mass;
 }
 
 Particle.prototype.draw = function(ctx) {

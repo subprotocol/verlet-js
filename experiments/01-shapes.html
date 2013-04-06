@@ -28,9 +28,14 @@
 
 		// simulation
 		var sim = new VerletSimulation(width, height, canvas);
-		sim.tire(new Vec2(100,50), 50, 30, 0.3, 0.9);
-		sim.tire(new Vec2(250,50), 70, 7, 0.1, 0.2);	
-		sim.tire(new Vec2(400,50), 70, 3, 1, 1);
+		
+		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,10), new Vec2(60,10), new Vec2(80,10), new Vec2(100,10)],0.02);
+		var pin = segment.pin(0);
+		var pin = segment.pin(4);
+		
+		var tire1 = sim.tire(new Vec2(100,50), 50, 30, 0.3, 0.9);
+		var tire2 = sim.tire(new Vec2(250,50), 70, 7, 0.1, 0.2);	
+		var tire3 = sim.tire(new Vec2(400,50), 70, 3, 1, 1);
 
 		// animation loop
 		var loop = function() {

@@ -1,4 +1,7 @@
 
+// DistanceConstraint -- constrains to initial distance
+// PinConstraint -- constrains to static/fixed point
+
 
 function DistanceConstraint(a, b, stiffness) {
 	this.a = a;
@@ -25,10 +28,9 @@ DistanceConstraint.prototype.draw = function(ctx) {
 
 
 
-function PinConstraint(a, pos, stiffness) {
+function PinConstraint(a, pos) {
 	this.a = a;
-	this.pos = pos;
-	this.stiffness = stiffness;
+	this.pos = (new Vec2()).mutableSet(pos);
 }
 
 PinConstraint.prototype.relax = function(stepCoef) {
@@ -38,7 +40,7 @@ PinConstraint.prototype.relax = function(stepCoef) {
 PinConstraint.prototype.draw = function(ctx) {
 	ctx.beginPath();
 	ctx.arc(this.pos.x, this.pos.y, 6, 0, 2*Math.PI);
-	ctx.fillStyle = "rgba(255,255,0,1)";
+	ctx.fillStyle = "rgba(0,153,255,0.1)";
 	ctx.fill();
 }
 
