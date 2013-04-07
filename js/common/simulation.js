@@ -65,7 +65,6 @@ VerletSimulation.prototype.Composite.prototype.pin = function(index, pos) {
 	return pc;
 }
 
-
 VerletSimulation.prototype.lineSegments = function(vertices, stiffness) {
 	var i;
 	
@@ -161,6 +160,9 @@ VerletSimulation.prototype.frame = function(step) {
 			
 			if (points[i].pos.x < 0)
 				points[i].pos.x = 0;
+
+			if (points[i].pos.x > this.width-1)
+				points[i].pos.x = this.width-1;
 		}
 	}
 }
@@ -170,7 +172,8 @@ VerletSimulation.prototype.draw = function() {
 	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);	
 	
-	var nearest = this.draggableEntity || this.nearestEntity();
+	// highlight nearest / dragged entity
+	var nearest = this.draggedEntity || this.nearestEntity();
 	if (nearest) {
 		this.ctx.beginPath();
 		this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
@@ -178,12 +181,14 @@ VerletSimulation.prototype.draw = function() {
 		this.ctx.stroke();
 	}
 
+	// draw constraints
 	for (c in this.composites) {
 		var constraints = this.composites[c].constraints;
 		for (i in constraints)
 			constraints[i].draw(this.ctx);
 	}
 
+	// draw particles
 	for (c in this.composites) {
 		var points = this.composites[c].points;
 		for (i in points)
@@ -205,7 +210,7 @@ VerletSimulation.prototype.nearestEntity = function() {
 			if (d2 <= this.selectionRadius*this.selectionRadius && (entity == null || d2 < d2Nearest)) {
 				entity = points[i];
 				constraintsNearest = this.composites[c].constraints;
-				d2 = d2Nearest;
+				d2Nearest = d2;
 			}
 		}
 	}
