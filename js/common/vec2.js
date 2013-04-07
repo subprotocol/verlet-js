@@ -78,6 +78,16 @@ Vec2.prototype.length2 = function(v) {
 	return this.x*this.x + this.y*this.y;
 }
 
+Vec2.prototype.dist = function(v) {
+	return Math.sqrt(this.dist2(v));
+}
+
+Vec2.prototype.dist2 = function(v) {
+	var x = v.x - this.x;
+	var y = v.y - this.y;
+	return x*x + y*y;
+}
+
 Vec2.prototype.normal = function() {
 	var m = Math.sqrt(this.x*this.x + this.y*this.y);
 	return new Vec2(this.x/m, this.y/m);
@@ -116,6 +126,8 @@ function test_Vec2() {
 	assert("mutable scale", (new Vec2(4,3)).mutableScale(2).equals(new Vec2(8, 6)));
 	assert("length", Math.abs((new Vec2(4,4)).length() - 5.65685) <= 0.00001);
 	assert("length2", (new Vec2(2,4)).length2() == 20);
+	assert("dist", Math.abs((new Vec2(2,4)).dist(new Vec2(3,5)) - 1.4142135) <= 0.000001);
+	assert("dist2", (new Vec2(2,4)).dist2(new Vec2(3,5)) == 2);
 
 	var normal = (new Vec2(2,4)).normal()
 	assert("normal", Math.abs(normal.length() - 1.0) <= 0.00001 && normal.epislonEquals(new Vec2(0.4472, 0.89443), 0.0001));

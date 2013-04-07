@@ -4,13 +4,14 @@
 	<title>Verlet Shapes - Sub Protocol</title>
 	<meta name="author" content="Sub Protocol" />
 	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="../js/common/vec2.js"></script>
 	<script type="text/javascript" src="../js/common/particle.js"></script>
 	<script type="text/javascript" src="../js/common/constraint.js"></script>
 	<script type="text/javascript" src="../js/common/simulation.js"></script>
 </head>
 <body>
-	<canvas id="scratch" style="width: 500px; height: 300px; border: 1px solid #f00;"></canvas>
+	<canvas id="scratch" style="width: 500px; height: 300px;"></canvas>
 	<script type="text/javascript">
 
 	window.onload = function() {
@@ -29,12 +30,12 @@
 		// simulation
 		var sim = new VerletSimulation(width, height, canvas);
 		
-		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,10), new Vec2(60,10), new Vec2(80,10), new Vec2(100,10)],0.02);
+		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,10), new Vec2(60,10), new Vec2(80,10), new Vec2(100,10)], 0.02);
 		var pin = segment.pin(0);
 		var pin = segment.pin(4);
 		
 		var tire1 = sim.tire(new Vec2(100,50), 50, 30, 0.3, 0.9);
-		var tire2 = sim.tire(new Vec2(250,50), 70, 7, 0.1, 0.2);	
+		var tire2 = sim.tire(new Vec2(250,50), 70, 7, 0.1, 0.2);
 		var tire3 = sim.tire(new Vec2(400,50), 70, 3, 1, 1);
 
 		// animation loop

@@ -1,4 +1,5 @@
 
+
 window.requestAnimFrame = window.requestAnimationFrame
 || window.webkitRequestAnimationFrame
 || window.mozRequestAnimationFrame
@@ -14,6 +15,35 @@ var VerletSimulation = function(width, height, canvas) {
 	this.height = height;
 	this.canvas = canvas;
 	this.ctx = canvas.getContext("2d");
+	this.mouse = new Vec2(0,0);
+	this.mouseDown = false;
+	this.draggedEntity = null;
+	this.selectionRadius = 20;
+	var _this = this;
+	
+	// prevent context menu
+	this.canvas.oncontextmenu = function(e) {
+		e.preventDefault();
+	};
+	
+	this.canvas.onmousedown = function(e) {
+		_this.mouseDown = true;
+		var nearest = _this.nearestEntity();
+		if (nearest) {
+			_this.draggedEntity = nearest;
+		}
+	};
+	
+	this.canvas.onmouseup = function(e) {
+		_this.mouseDown = false;
+		_this.draggedEntity = null;
+	};
+	
+	this.canvas.onmousemove = function(e) {
+		var rect = _this.canvas.getBoundingClientRect();
+		_this.mouse.x = e.clientX - rect.left;
+		_this.mouse.y = e.clientY - rect.top;
+	};	
 	
 	// simulation params
 	this.gravity = new Vec2(0,0.2);
@@ -87,7 +117,7 @@ VerletSimulation.prototype.frame = function(step) {
 		for (i in this.composites[c].points) {
 			var points = this.composites[c].points;
 			
-			// calcualte velocity
+			// calculate velocity
 			var velocity = points[i].pos.sub(points[i].lastPos);
 		
 			// ground friction
@@ -98,7 +128,7 @@ VerletSimulation.prototype.frame = function(step) {
 				velocity.mutableScale(m*this.friction);
 			}
 		
-			// save last good state state
+			// save last good state
 			points[i].lastPos.mutableSet(points[i].pos);
 		
 			// gravity
@@ -109,6 +139,10 @@ VerletSimulation.prototype.frame = function(step) {
 		}
 	}
 	
+	// handle dragging of entities
+	if (this.draggedEntity)
+		this.draggedEntity.pos.mutableSet(this.mouse);
+		
 	// relax
 	var stepCoef = 1/step;
 	for (c in this.composites) {
@@ -129,23 +163,58 @@ VerletSimulation.prototype.frame = function(step) {
 				points[i].pos.x = 0;
 		}
 	}
-
 }
 
 VerletSimulation.prototype.draw = function() {
 	var i, c;
 	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);	
+	
+	var nearest = this.draggableEntity || this.nearestEntity();
+	if (nearest) {
+		this.ctx.beginPath();
+		this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
+		this.ctx.strokeStyle = "#4f545c";
+		this.ctx.stroke();
+	}
+
+	for (c in this.composites) {
+		var constraints = this.composites[c].constraints;
+		for (i in constraints)
+			constraints[i].draw(this.ctx);
+	}
 
 	for (c in this.composites) {
 		var points = this.composites[c].points;
-		var constraints = this.composites[c].constraints;
-		
-		for (i in constraints)
-			constraints[i].draw(this.ctx);
-		
 		for (i in points)
 			points[i].draw(this.ctx);
 	}
+}
+
+VerletSimulation.prototype.nearestEntity = function() {
+	var c, i;
+	var d2Nearest = 0;
+	var entity = null;
+	var constraintsNearest = null;
+	
+	// find nearest point
+	for (c in this.composites) {
+		var points = this.composites[c].points;
+		for (i in points) {
+			var d2 = points[i].pos.dist2(this.mouse);
+			if (d2 <= this.selectionRadius*this.selectionRadius && (entity == null || d2 < d2Nearest)) {
+				entity = points[i];
+				constraintsNearest = this.composites[c].constraints;
+				d2 = d2Nearest;
+			}
+		}
+	}
+	
+	// search for pinned constraints for this entity
+	for (i in constraintsNearest)
+		if (constraintsNearest[i] instanceof PinConstraint && constraintsNearest[i].a == entity)
+			entity = constraintsNearest[i];
+	
+	return entity;
 }
 

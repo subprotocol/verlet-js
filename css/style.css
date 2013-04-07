@@ -1,0 +1,12 @@
+
+body {
+	background: #e4e6e8;
+}
+
+canvas {
+	display: block;
+	margin: 50px auto;
+	background: #fff;
+	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.1);
+}
+
