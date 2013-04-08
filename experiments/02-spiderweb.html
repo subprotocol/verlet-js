@@ -25,13 +25,13 @@
 
 		var composite = new this.Composite();
 
-		// points
+		// particles
 		for (i=0;i<n;++i) {
 			var theta = i*stride + Math.cos(i*0.4)*0.05 + Math.cos(i*0.05)*0.2;
 			var shrinkingRadius = radius - radiusStride*i + Math.cos(i*0.1)*20;
 			
 			var offy = Math.cos(theta*2.1)*(radius/depth)*0.2;
-			composite.points.push(new Particle(new Vec2(origin.x + Math.cos(theta)*shrinkingRadius, origin.y + Math.sin(theta)*shrinkingRadius + offy)));
+			composite.particles.push(new Particle(new Vec2(origin.x + Math.cos(theta)*shrinkingRadius, origin.y + Math.sin(theta)*shrinkingRadius + offy)));
 		}
 		
 		for (i=0;i<segments;i+=4)
@@ -40,14 +40,14 @@
 		// constraints
 		for (i=0;i<n-1;++i) {
 			// neighbor
-			composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[i+1], stiffness));
+			composite.constraints.push(new DistanceConstraint(composite.particles[i], composite.particles[i+1], stiffness));
 			
 			// span rings
 			var off = i + segments;
 			if (off < n-1)
-				composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[off], stiffness));
+				composite.constraints.push(new DistanceConstraint(composite.particles[i], composite.particles[off], stiffness));
 			else
-				composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[n-1], stiffness));
+				composite.constraints.push(new DistanceConstraint(composite.particles[i], composite.particles[n-1], stiffness));
 		}
 		
 		for (c in composite.constraints)
@@ -90,8 +90,8 @@
 		
 		tire1.drawParticles = function(ctx, composite) {
 			var i;
-			for (i in composite.points) {
-				var point = composite.points[i];
+			for (i in composite.particles) {
+				var point = composite.particles[i];
 				ctx.beginPath();
 				ctx.arc(point.pos.x, point.pos.y, 2, 0, 2*Math.PI);
 				ctx.fillStyle = "#ff6000";
