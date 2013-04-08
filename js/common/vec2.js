@@ -93,6 +93,18 @@ Vec2.prototype.normal = function() {
 	return new Vec2(this.x/m, this.y/m);
 }
 
+Vec2.prototype.dot = function(v) {
+	return this.x*v.x + this.y*v.y;
+}
+
+Vec2.prototype.angle = function(v) {
+	return Math.atan2(this.x*v.y-this.y*v.x,this.x*v.x+this.y*v.y);
+}
+
+Vec2.prototype.angle2 = function(vLeft, vRight) {
+	return vLeft.sub(this).angle(vRight.sub(this));
+}
+
 Vec2.prototype.rotate = function(origin, theta) {
 	var x = this.x - origin.x;
 	var y = this.y - origin.y;
@@ -131,6 +143,9 @@ function test_Vec2() {
 
 	var normal = (new Vec2(2,4)).normal()
 	assert("normal", Math.abs(normal.length() - 1.0) <= 0.00001 && normal.epislonEquals(new Vec2(0.4472, 0.89443), 0.0001));
+	assert("dot", (new Vec2(2,3)).dot(new Vec2(4,1)) == 11);
+	assert("angle", (new Vec2(0,-1)).angle(new Vec2(1,0))*(180/Math.PI) == 90);
+	assert("angle2", (new Vec2(1,1)).angle2(new Vec2(1,0), new Vec2(2,1))*(180/Math.PI) == 90);
 	assert("rotate", (new Vec2(2,0)).rotate(new Vec2(1,0), Math.PI/2).equals(new Vec2(1,1)));
 	assert("toString", (new Vec2(2,4)) == "(2, 4)");
 }

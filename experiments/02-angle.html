@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Verlet Angular Constraints - Sub Protocol</title>
+	<meta name="author" content="Sub Protocol" />
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
+	<script type="text/javascript" src="../js/common/vec2.js"></script>
+	<script type="text/javascript" src="../js/common/constraint.js"></script>
+	<script type="text/javascript" src="../js/common/simulation.js"></script>
+</head>
+<body>
+	<canvas id="scratch" style="width: 800px; height: 500px;"></canvas>
+	<script type="text/javascript">
+
+	window.onload = function() {
+		var canvas = document.getElementById("scratch");
+
+		// canvas dimensions
+		var width = parseInt(canvas.style.width);
+		var height = parseInt(canvas.style.height);
+
+		// retina
+		var dpr = window.devicePixelRatio || 1;
+		canvas.width = width*dpr;
+		canvas.height = height*dpr;
+		canvas.getContext("2d").scale(dpr, dpr);
+
+		// simulation
+		var sim = new VerletSimulation(width, height, canvas);
+		
+		// entities
+		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,30), new Vec2(60,10)], 0.1);
+		
+		var particles = segment.particles;
+		segment.constraints.push(new AngleConstraint(particles[0], particles[1], particles[2], 0.2));
+
+		// animation loop
+		var loop = function() {
+			sim.frame(16);
+			sim.draw();
+			requestAnimFrame(loop);
+		};
+
+		loop();
+	};
+	
+	
+	</script>
+</body>
+</html>
