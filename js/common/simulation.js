@@ -56,6 +56,9 @@ var VerletSimulation = function(width, height, canvas) {
 VerletSimulation.prototype.Composite = function() {
 	this.points = [];
 	this.constraints = [];
+	
+	this.drawParticles = null;
+	this.drawConstraints = null;
 }
 
 VerletSimulation.prototype.Composite.prototype.pin = function(index, pos) {
@@ -63,6 +66,13 @@ VerletSimulation.prototype.Composite.prototype.pin = function(index, pos) {
 	var pc = new PinConstraint(this.points[index], pos);
 	this.constraints.push(pc);
 	return pc;
+}
+
+VerletSimulation.prototype.point = function(pos) {
+	var composite = new this.Composite();
+	composite.points.push(new Particle(pos));
+	this.composites.push(composite);
+	return composite;
 }
 
 VerletSimulation.prototype.lineSegments = function(vertices, stiffness) {
@@ -87,7 +97,6 @@ VerletSimulation.prototype.tire = function(origin, radius, segments, spokeStiffn
 	var composite = new this.Composite();
 	
 	// points
-	var points = [];
 	for (i=0;i<segments;++i) {
 		var theta = i*stride;
 		composite.points.push(new Particle(new Vec2(origin.x + Math.cos(theta)*radius, origin.y + Math.sin(theta)*radius)));
@@ -97,7 +106,6 @@ VerletSimulation.prototype.tire = function(origin, radius, segments, spokeStiffn
 	composite.points.push(center);
 	
 	// constraints
-	var constraints = [];
 	for (i=0;i<segments;++i) {
 		composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[(i+1)%segments], treadStiffness));
 		composite.constraints.push(new DistanceConstraint(composite.points[i], center, spokeStiffness))
@@ -120,7 +128,7 @@ VerletSimulation.prototype.frame = function(step) {
 			var velocity = points[i].pos.sub(points[i].lastPos);
 		
 			// ground friction
-			if (points[i].pos.y >= this.height && velocity.length2() > 0.000001) {
+			if (points[i].pos.y >= this.height-1 && velocity.length2() > 0.000001) {
 				var m = velocity.length();
 				velocity.x /= m;
 				velocity.y /= m;
@@ -183,6 +191,11 @@ VerletSimulation.prototype.draw = function() {
 
 	// draw constraints
 	for (c in this.composites) {
+		if (this.composites[c].drawConstraints) {
+			this.composites[c].drawConstraints(this.ctx, this.composites[c]);
+			continue;
+		}
+		
 		var constraints = this.composites[c].constraints;
 		for (i in constraints)
 			constraints[i].draw(this.ctx);
@@ -190,6 +203,11 @@ VerletSimulation.prototype.draw = function() {
 
 	// draw particles
 	for (c in this.composites) {
+		if (this.composites[c].drawParticles) {
+			this.composites[c].drawParticles(this.ctx, this.composites[c]);
+			continue;
+		}
+		
 		var points = this.composites[c].points;
 		for (i in points)
 			points[i].draw(this.ctx);

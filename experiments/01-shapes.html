@@ -30,6 +30,7 @@
 		// simulation
 		var sim = new VerletSimulation(width, height, canvas);
 		
+		// entities
 		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,10), new Vec2(60,10), new Vec2(80,10), new Vec2(100,10)], 0.02);
 		var pin = segment.pin(0);
 		var pin = segment.pin(4);

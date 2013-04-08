@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Verlet Shapes - Sub Protocol</title>
+	<meta name="author" content="Sub Protocol" />
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
+	<script type="text/javascript" src="../js/common/vec2.js"></script>
+	<script type="text/javascript" src="../js/common/particle.js"></script>
+	<script type="text/javascript" src="../js/common/constraint.js"></script>
+	<script type="text/javascript" src="../js/common/simulation.js"></script>
+</head>
+<body>
+	<canvas id="scratch" style="width: 800px; height: 500px;"></canvas>
+	<script type="text/javascript">
+
+
+	VerletSimulation.prototype.spiderweb = function(origin, radius, segments, depth) {
+		var stiffness = 0.6;
+		var tensor = 0.3;
+		var stride = (2*Math.PI)/segments;
+		var n = segments*depth;
+		var radiusStride = radius/n;
+		var i, c;
+
+		var composite = new this.Composite();
+
+		// points
+		for (i=0;i<n;++i) {
+			var theta = i*stride + Math.cos(i*0.4)*0.05 + Math.cos(i*0.05)*0.2;
+			var shrinkingRadius = radius - radiusStride*i + Math.cos(i*0.1)*20;
+			
+			var offy = Math.cos(theta*2.1)*(radius/depth)*0.2;
+			composite.points.push(new Particle(new Vec2(origin.x + Math.cos(theta)*shrinkingRadius, origin.y + Math.sin(theta)*shrinkingRadius + offy)));
+		}
+		
+		for (i=0;i<segments;i+=4)
+			composite.pin(i);
+
+		// constraints
+		for (i=0;i<n-1;++i) {
+			// neighbor
+			composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[i+1], stiffness));
+			
+			// span rings
+			var off = i + segments;
+			if (off < n-1)
+				composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[off], stiffness));
+			else
+				composite.constraints.push(new DistanceConstraint(composite.points[i], composite.points[n-1], stiffness));
+		}
+		
+		for (c in composite.constraints)
+			composite.constraints[c].distance *= tensor;
+
+		this.composites.push(composite);
+		return composite;
+	}
+	
+	window.onload = function() {
+		var canvas = document.getElementById("scratch");
+
+		// canvas dimensions
+		var width = parseInt(canvas.style.width);
+		var height = parseInt(canvas.style.height);
+
+		// retina
+		var dpr = window.devicePixelRatio || 1;
+		canvas.width = width*dpr;
+		canvas.height = height*dpr;
+		canvas.getContext("2d").scale(dpr, dpr);
+
+		// simulation
+		var sim = new VerletSimulation(width, height, canvas);
+		
+		// entities
+		var spiderweb = sim.spiderweb(new Vec2(width/2,height/2), Math.min(width, height)/2, 20, 7);
+		var tire1 = sim.tire(new Vec2(100,50), 50, 30, 0.3, 0.9);
+		tire1.drawConstraints = function(ctx, composite) {
+			var i;
+			for (i in composite.constraints) {
+				var constraint = composite.constraints[i];
+				ctx.beginPath();
+				ctx.moveTo(constraint.a.pos.x, constraint.a.pos.y);
+				ctx.lineTo(constraint.b.pos.x, constraint.b.pos.y);
+				ctx.strokeStyle = "#000";
+				ctx.stroke();
+			}
+		}
+		
+		tire1.drawParticles = function(ctx, composite) {
+			var i;
+			for (i in composite.points) {
+				var point = composite.points[i];
+				ctx.beginPath();
+				ctx.arc(point.pos.x, point.pos.y, 2, 0, 2*Math.PI);
+				ctx.fillStyle = "#ff6000";
+				ctx.fill();
+			}
+		}
+		
+		// animation loop
+		var loop = function() {
+			sim.frame(16);
+			sim.draw();
+			requestAnimFrame(loop);
+		};
+
+		loop();
+	};
+	
+	
+	</script>
+</body>
+</html>
