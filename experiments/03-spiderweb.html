@@ -28,7 +28,7 @@
 		var bodyJointStiffness = 1;
 		
 		var composite = new this.Composite();
-		composite.feet = [];
+		composite.legs = [];
 		
 		composite.particles.push(new Particle(origin));
 		composite.particles.push(new Particle(origin.add(new Vec2(0,-10))));
@@ -65,8 +65,8 @@
 			composite.particles.push(rightFoot);
 			composite.particles.push(leftFoot);
 			
-			composite.feet.push(rightFoot);
-			composite.feet.push(leftFoot);
+			composite.legs.push(rightFoot);
+			composite.legs.push(leftFoot);
 			
 			len = composite.particles.length;
 			composite.constraints.push(new DistanceConstraint(composite.particles[len-4], composite.particles[len-2], legSeg4Stiffness));
@@ -176,7 +176,7 @@
 					for (k=0;k<8;++k) {
 						if (
 							spider.constraints[j] instanceof DistanceConstraint
-							&& spider.constraints[j].a == spider.feet[k]
+							&& spider.constraints[j].a == spider.legs[k]
 							&& spider.constraints[j].b == spiderweb.particles[i])
 						{
 							leftFoot = true;
@@ -190,7 +190,7 @@
 		}
 		
 		for (i in spider.constraints) {
-			if (spider.constraints[i] instanceof DistanceConstraint && spider.constraints[i].a == spider.feet[leg]) {
+			if (spider.constraints[i] instanceof DistanceConstraint && spider.constraints[i].a == spider.legs[leg]) {
 				spider.constraints.splice(i, 1);
 				break;
 			}
@@ -198,7 +198,7 @@
 		
 		if (paths.length > 0) {
 			shuffle(paths);
-			spider.constraints.push(new DistanceConstraint(spider.feet[leg], paths[0], 1, 0));
+			spider.constraints.push(new DistanceConstraint(spider.legs[leg], paths[0], 1, 0));
 		}
 	}
 	
@@ -265,6 +265,7 @@
 			if (Math.floor(Math.random()*4) == 0) {
 				sim.crawl(((legIndex++)*3)%8);
 			}
+			
 			
 			sim.frame(16);
 			sim.draw();
