@@ -34,11 +34,38 @@
 		
 		var particles = segment.particles;
 		segment.constraints.push(new AngleConstraint(particles[0], particles[1], particles[2], 0.2));
+		
+		
+		var n = 20;
+		var cycles = 3;
+		var stride = (cycles*2*Math.PI)/n;
+		var i;
+		var a = [];
+		for (i=0;i<n;++i) {
+			a.push(new Vec2(50 + i*10,Math.cos(i*stride)*20 + 50));
+			
+			//a.push(new Vec2(50 + i*10,-i*1 + 50));
+		}
+		
+		var segment2 = sim.lineSegments(a, 0.95);
+		
+		var test = null;
+		for (i=0;i<n-2;++i) {
+			var angleConstraint = new AngleConstraint(segment2.particles[i], segment2.particles[i+1], segment2.particles[i+2], 0.9);
+			if (i == 13)
+				test = angleConstraint;
+			segment2.constraints.push(angleConstraint);
+		}
+		
 
 		// animation loop
 		var loop = function() {
 			sim.frame(16);
 			sim.draw();
+			
+			var angle = test.b.pos.angle2(test.a.pos, test.c.pos);
+			//console.log(angle);
+			
 			requestAnimFrame(loop);
 		};
 

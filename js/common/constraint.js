@@ -55,31 +55,21 @@ function AngleConstraint(a, b, c, stiffness) {
 }
 
 AngleConstraint.prototype.relax = function(stepCoef) {
+	
 	var angle = this.b.pos.angle2(this.a.pos, this.c.pos);
 	var diff = angle - this.angle;
 	
-	if (Math.abs(diff) >= Math.PI)
-		diff *= -1;
+	if (diff <= -Math.PI)
+		diff += 2*Math.PI;
+	else if (diff >= Math.PI)
+		diff -= 2*Math.PI;
+
+	diff *= stepCoef*this.stiffness;
 	
-	diff *= this.stiffness*stepCoef;
-	
-	var ad = this.a.pos.dist2(this.b.pos);
-	var ac = this.c.pos.dist2(this.b.pos);
-	
-	if (ad < 0.0001)
-		ad = 0.0001;
-	
-	if (ac < 0.0001)
-		ac = 0.0001;
-	
-	var aTorqueCoef = this.distance2/ad;
-	var cTorqueCoef = this.distance2/ac;
-	
-	this.a.pos = this.a.pos.rotate(this.b.pos, diff*aTorqueCoef);
-	this.c.pos = this.c.pos.rotate(this.b.pos, -diff*cTorqueCoef);
-	
-	this.b.pos = this.b.pos.rotate(this.a.pos, diff*aTorqueCoef);
-	this.b.pos = this.b.pos.rotate(this.c.pos, -diff*cTorqueCoef);
+	this.a.pos = this.a.pos.rotate(this.b.pos, diff);
+	this.c.pos = this.c.pos.rotate(this.b.pos, -diff);
+	this.b.pos = this.b.pos.rotate(this.a.pos, diff);
+	this.b.pos = this.b.pos.rotate(this.c.pos, -diff);
 }
 
 AngleConstraint.prototype.draw = function(ctx) {
