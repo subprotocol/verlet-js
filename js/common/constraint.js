@@ -3,10 +3,10 @@
 // PinConstraint -- constrains to static/fixed point
 // AngleConstraint -- constrains 3 particles to an angle
 
-function DistanceConstraint(a, b, stiffness) {
+function DistanceConstraint(a, b, stiffness, distance /*optional*/) {
 	this.a = a;
 	this.b = b;
-	this.distance = a.pos.sub(b.pos).length();
+	this.distance = typeof distance != "undefined" ? distance : a.pos.sub(b.pos).length();
 	this.stiffness = stiffness;
 }
 
@@ -49,13 +49,11 @@ function AngleConstraint(a, b, c, stiffness) {
 	this.a = a;
 	this.b = b;
 	this.c = c;
-	this.distance2 = (a.pos.dist2(b.pos) + c.pos.dist2(b.pos))/2;
 	this.angle = this.b.pos.angle2(this.a.pos, this.c.pos);
 	this.stiffness = stiffness;
 }
 
 AngleConstraint.prototype.relax = function(stepCoef) {
-	
 	var angle = this.b.pos.angle2(this.a.pos, this.c.pos);
 	var diff = angle - this.angle;
 	
