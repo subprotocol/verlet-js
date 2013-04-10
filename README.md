@@ -7,7 +7,7 @@ Particles, distance constraints, and angular constraints are all supported by ve
 
 License
 -------
-You may use verlet-js under the terms of the MIT License (See LICENSE).
+You may use verlet-js under the terms of the MIT License (See [LICENSE](LICENSE)).
 
 
 Examples
