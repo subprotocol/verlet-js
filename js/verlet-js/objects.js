@@ -25,6 +25,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // generic verlet entities
 
+VerletJS.prototype.point = function(pos) {
+	var composite = new this.Composite();
+	composite.particles.push(new Particle(pos));
+	this.composites.push(composite);
+	return composite;
+}
+
 VerletJS.prototype.lineSegments = function(vertices, stiffness) {
 	var i;
 	

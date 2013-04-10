@@ -103,13 +103,6 @@ VerletJS.prototype.Composite.prototype.pin = function(index, pos) {
 	return pc;
 }
 
-VerletJS.prototype.point = function(pos) {
-	var composite = new this.Composite();
-	composite.particles.push(new Particle(pos));
-	this.composites.push(composite);
-	return composite;
-}
-
 VerletJS.prototype.frame = function(step) {
 	var i, j, c;
 
@@ -173,31 +166,26 @@ VerletJS.prototype.draw = function() {
 	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);	
 	
-	// draw constraints
 	for (c in this.composites) {
+		// draw constraints
 		if (this.composites[c].drawConstraints) {
 			this.composites[c].drawConstraints(this.ctx, this.composites[c]);
-			continue;
+		} else {
+			var constraints = this.composites[c].constraints;
+			for (i in constraints)
+				constraints[i].draw(this.ctx);
 		}
 		
-		var constraints = this.composites[c].constraints;
-		for (i in constraints)
-			constraints[i].draw(this.ctx);
-	}
-
-	// draw particles
-	for (c in this.composites) {
+		// draw particles
 		if (this.composites[c].drawParticles) {
 			this.composites[c].drawParticles(this.ctx, this.composites[c]);
-			continue;
+		} else {
+			var particles = this.composites[c].particles;
+			for (i in particles)
+				particles[i].draw(this.ctx);
 		}
-		
-		var particles = this.composites[c].particles;
-		for (i in particles)
-			particles[i].draw(this.ctx);
 	}
-	
-	
+
 	// highlight nearest / dragged entity
 	var nearest = this.draggedEntity || this.nearestEntity();
 	if (nearest) {
