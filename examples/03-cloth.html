@@ -38,10 +38,6 @@
 		var cloth = sim.cloth(new Vec2(width/2,height/3), min, min, segments, 6, 0.9);
 		
 		cloth.drawConstraints = function(ctx, composite) {
-		}
-		
-		cloth.drawParticles = function(ctx, composite) {
-			
 			var stride = min/segments;
 			var x,y;
 			for (y=1;y<segments;++y) {
@@ -70,6 +66,21 @@
 					ctx.fill();
 				}
 			}
+			
+			var c;
+			for (c in composite.constraints) {
+				if (composite.constraints[c] instanceof PinConstraint) {
+					var point = composite.constraints[c];
+					ctx.beginPath();
+					ctx.arc(point.pos.x, point.pos.y, 1.2, 0, 2*Math.PI);
+					ctx.fillStyle = "rgba(255,255,255,1)";
+					ctx.fill();
+				}
+			}
+		}
+		
+		cloth.drawParticles = function(ctx, composite) {
+			// do nothing for particles
 		}
 		
 		// animation loop
