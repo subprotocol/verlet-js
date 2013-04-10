@@ -101,6 +101,38 @@ VerletSimulation.prototype.lineSegments = function(vertices, stiffness) {
 	return composite;
 }
 
+VerletSimulation.prototype.cloth = function(origin, width, height, segments, pinMod, stiffness) {
+	
+	var composite = new this.Composite();
+	
+	var xStride = width/segments;
+	var yStride = height/segments;
+	
+	var x,y;
+	for (y=0;y<segments;++y) {
+		for (x=0;x<segments;++x) {
+			var px = origin.x + x*xStride - width/2 + xStride/2;
+			var py = origin.y + y*yStride - height/2 + yStride/2;
+			composite.particles.push(new Particle(new Vec2(px, py)));
+			
+			if (x > 0)
+				composite.constraints.push(new DistanceConstraint(composite.particles[y*segments+x], composite.particles[y*segments+x-1], stiffness));
+			
+			if (y > 0)
+				composite.constraints.push(new DistanceConstraint(composite.particles[y*segments+x], composite.particles[(y-1)*segments+x], stiffness));
+		}
+	}
+	
+	for (x=0;x<segments;++x) {
+		if (x%pinMod == 0)
+		composite.pin(x);
+	}
+	
+	this.composites.push(composite);
+	return composite;
+}
+
+
 VerletSimulation.prototype.tire = function(origin, radius, segments, spokeStiffness, treadStiffness) {
 	var stride = (2*Math.PI)/segments;
 	var i;
@@ -152,7 +184,7 @@ VerletSimulation.prototype.frame = function(step) {
 			// gravity
 			particles[i].pos.mutableAdd(this.gravity);
 		
-			// interia	
+			// inertia	
 			particles[i].pos.mutableAdd(velocity);
 		}
 	}
