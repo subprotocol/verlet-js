@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="../js/common/vec2.js"></script>
 	<script type="text/javascript" src="../js/common/constraint.js"></script>
-	<script type="text/javascript" src="../js/common/simulation.js"></script>
+	<script type="text/javascript" src="../js/common/verlet.js"></script>
 </head>
 <body>
 	<canvas id="scratch" style="width: 500px; height: 300px;"></canvas>
@@ -27,7 +27,7 @@
 		canvas.getContext("2d").scale(dpr, dpr);
 
 		// simulation
-		var sim = new VerletSimulation(width, height, canvas);
+		var sim = new VerletJS(width, height, canvas);
 		
 		// entities
 		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,10), new Vec2(60,10), new Vec2(80,10), new Vec2(100,10)], 0.02);

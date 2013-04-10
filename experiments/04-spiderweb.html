@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Verlet Spider web - Sub Protocol</title>
+	<title>Verlet Spider Simulation - Sub Protocol</title>
 	<meta name="author" content="Sub Protocol" />
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
 	<script type="text/javascript" src="../js/common/vec2.js"></script>
 	<script type="text/javascript" src="../js/common/constraint.js"></script>
-	<script type="text/javascript" src="../js/common/simulation.js"></script>
+	<script type="text/javascript" src="../js/common/verlet.js"></script>
 </head>
 <body>
 	<canvas id="scratch" style="width: 800px; height: 500px;"></canvas>
 	<script type="text/javascript">
 
-	VerletSimulation.prototype.spider = function(origin) {
+	VerletJS.prototype.spider = function(origin) {
 		var i;
 		var legSeg1Stiffness = 0.95;
 		var legSeg2Stiffness = 0.95;
@@ -90,7 +90,7 @@
 		return composite;
 	}
 	
-	VerletSimulation.prototype.spiderweb = function(origin, radius, segments, depth) {
+	VerletJS.prototype.spiderweb = function(origin, radius, segments, depth) {
 		var stiffness = 0.6;
 		var tensor = 0.3;
 		var stride = (2*Math.PI)/segments;
@@ -139,7 +139,7 @@
 		return o;
 	}
 	
-	VerletSimulation.prototype.crawl = function(leg) {
+	VerletJS.prototype.crawl = function(leg) {
 		
 		var stepRadius = 100;
 		var minStepRadius = 40;
@@ -216,7 +216,7 @@
 		canvas.getContext("2d").scale(dpr, dpr);
 
 		// simulation
-		var sim = new VerletSimulation(width, height, canvas);
+		var sim = new VerletJS(width, height, canvas);
 		
 		// entities
 		var spiderweb = sim.spiderweb(new Vec2(width/2,height/2), Math.min(width, height)/2, 20, 7);

@@ -21,7 +21,7 @@ Particle.prototype.draw = function(ctx) {
 	ctx.fill();
 }
 
-var VerletSimulation = function(width, height, canvas) {
+var VerletJS = function(width, height, canvas) {
 	this.width = width;
 	this.height = height;
 	this.canvas = canvas;
@@ -65,7 +65,7 @@ var VerletSimulation = function(width, height, canvas) {
 	this.composites = [];
 }
 
-VerletSimulation.prototype.Composite = function() {
+VerletJS.prototype.Composite = function() {
 	this.particles = [];
 	this.constraints = [];
 	
@@ -73,21 +73,21 @@ VerletSimulation.prototype.Composite = function() {
 	this.drawConstraints = null;
 }
 
-VerletSimulation.prototype.Composite.prototype.pin = function(index, pos) {
+VerletJS.prototype.Composite.prototype.pin = function(index, pos) {
 	pos = pos || this.particles[index].pos;
 	var pc = new PinConstraint(this.particles[index], pos);
 	this.constraints.push(pc);
 	return pc;
 }
 
-VerletSimulation.prototype.point = function(pos) {
+VerletJS.prototype.point = function(pos) {
 	var composite = new this.Composite();
 	composite.particles.push(new Particle(pos));
 	this.composites.push(composite);
 	return composite;
 }
 
-VerletSimulation.prototype.lineSegments = function(vertices, stiffness) {
+VerletJS.prototype.lineSegments = function(vertices, stiffness) {
 	var i;
 	
 	var composite = new this.Composite();
@@ -102,7 +102,7 @@ VerletSimulation.prototype.lineSegments = function(vertices, stiffness) {
 	return composite;
 }
 
-VerletSimulation.prototype.cloth = function(origin, width, height, segments, pinMod, stiffness) {
+VerletJS.prototype.cloth = function(origin, width, height, segments, pinMod, stiffness) {
 	
 	var composite = new this.Composite();
 	
@@ -134,7 +134,7 @@ VerletSimulation.prototype.cloth = function(origin, width, height, segments, pin
 }
 
 
-VerletSimulation.prototype.tire = function(origin, radius, segments, spokeStiffness, treadStiffness) {
+VerletJS.prototype.tire = function(origin, radius, segments, spokeStiffness, treadStiffness) {
 	var stride = (2*Math.PI)/segments;
 	var i;
 	
@@ -161,7 +161,7 @@ VerletSimulation.prototype.tire = function(origin, radius, segments, spokeStiffn
 }
 
 
-VerletSimulation.prototype.frame = function(step) {
+VerletJS.prototype.frame = function(step) {
 	var i, j, c;
 
 	for (c in this.composites) {
@@ -219,7 +219,7 @@ VerletSimulation.prototype.frame = function(step) {
 	}
 }
 
-VerletSimulation.prototype.draw = function() {
+VerletJS.prototype.draw = function() {
 	var i, c;
 	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);	
@@ -259,7 +259,7 @@ VerletSimulation.prototype.draw = function() {
 	}
 }
 
-VerletSimulation.prototype.nearestEntity = function() {
+VerletJS.prototype.nearestEntity = function() {
 	var c, i;
 	var d2Nearest = 0;
 	var entity = null;
