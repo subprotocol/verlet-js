@@ -14,6 +14,9 @@
 	<canvas id="scratch" style="width: 800px; height: 500px; background: #000;"></canvas>
 	<script type="text/javascript">
 
+	function lerp(a, b, p) {
+		return (b-a)*p + a;
+	}
 	
 	window.onload = function() {
 		var canvas = document.getElementById("scratch");
@@ -61,7 +64,7 @@
 					if (coef > 255)
 						coef = 255;
 					
-					ctx.fillStyle = "rgba(" + coef + ",0," + (255-coef)+ ",1)";
+					ctx.fillStyle = "rgba(" + coef + ",0," + (255-coef)+ "," +lerp(0.25,1,coef/255.0)+")";
 					
 					ctx.fill();
 				}
