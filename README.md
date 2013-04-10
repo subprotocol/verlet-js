@@ -3,8 +3,7 @@ verlet-js
 
 A simple Verlet (pronounced 'ver-ley') physics engine written in javascript.
 
-Particles, distance constraints and angular constraints are currently supported by verlet-js.  From these primitives it is possible to construct just about anything you can imagine.
-
+Particles, distance constraints, and angular constraints are all supported by verlet-js.  From these primitives it is possible to construct just about anything you can imagine.
 
 License
 -------
