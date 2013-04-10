@@ -29,6 +29,7 @@
 
 		// simulation
 		var sim = new VerletSimulation(width, height, canvas);
+		sim.highlightColor = "#fff";
 		
 		// entities
 		var min = Math.min(width,height)*0.5;
@@ -65,20 +66,9 @@
 					
 					ctx.fillStyle = "rgba(" + coef + ",0," + (255-coef)+ ",1)";
 					
-					
-			
 					ctx.fill();
 				}
 			}
-			
-			/*var i;
-			for (i in composite.particles) {
-				var point = composite.particles[i];
-				ctx.beginPath();
-				ctx.arc(point.pos.x, point.pos.y, 1.2, 0, 2*Math.PI);
-				ctx.fillStyle = "#ff6000";
-				ctx.fill();
-			}*/
 		}
 		
 		// animation loop

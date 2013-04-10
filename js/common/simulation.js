@@ -30,6 +30,7 @@ var VerletSimulation = function(width, height, canvas) {
 	this.mouseDown = false;
 	this.draggedEntity = null;
 	this.selectionRadius = 20;
+	this.highlightColor = "#4f545c";
 	var _this = this;
 	
 	// prevent context menu
@@ -223,15 +224,6 @@ VerletSimulation.prototype.draw = function() {
 	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);	
 	
-	// highlight nearest / dragged entity
-	var nearest = this.draggedEntity || this.nearestEntity();
-	if (nearest) {
-		this.ctx.beginPath();
-		this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
-		this.ctx.strokeStyle = "#4f545c";
-		this.ctx.stroke();
-	}
-
 	// draw constraints
 	for (c in this.composites) {
 		if (this.composites[c].drawConstraints) {
@@ -254,6 +246,16 @@ VerletSimulation.prototype.draw = function() {
 		var particles = this.composites[c].particles;
 		for (i in particles)
 			particles[i].draw(this.ctx);
+	}
+	
+	
+	// highlight nearest / dragged entity
+	var nearest = this.draggedEntity || this.nearestEntity();
+	if (nearest) {
+		this.ctx.beginPath();
+		this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
+		this.ctx.strokeStyle = this.highlightColor;
+		this.ctx.stroke();
 	}
 }
 
