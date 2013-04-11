@@ -16,10 +16,10 @@
 
 	VerletJS.prototype.spider = function(origin) {
 		var i;
-		var legSeg1Stiffness = 0.95;
-		var legSeg2Stiffness = 0.95;
-		var legSeg3Stiffness = 0.95;
-		var legSeg4Stiffness = 0.95;
+		var legSeg1Stiffness = 0.99;
+		var legSeg2Stiffness = 0.99;
+		var legSeg3Stiffness = 0.99;
+		var legSeg4Stiffness = 0.99;
 		
 		var joint1Stiffness = 1;
 		var joint2Stiffness = 0.4;
@@ -31,9 +31,21 @@
 		var composite = new this.Composite();
 		composite.legs = [];
 		
-		composite.particles.push(new Particle(origin));
-		composite.particles.push(new Particle(origin.add(new Vec2(0,-10))));
-		composite.constraints.push(new DistanceConstraint(composite.particles[1], composite.particles[0], bodyStiffness));
+		
+		composite.thorax = new Particle(origin);
+		composite.head = new Particle(origin.add(new Vec2(0,-5)));
+		composite.abdomen = new Particle(origin.add(new Vec2(0,10)));
+		
+		composite.particles.push(composite.thorax);
+		composite.particles.push(composite.head);
+		composite.particles.push(composite.abdomen);
+		
+		composite.constraints.push(new DistanceConstraint(composite.head, composite.thorax, bodyStiffness));
+		
+		
+		composite.constraints.push(new DistanceConstraint(composite.abdomen, composite.thorax, bodyStiffness));
+		composite.constraints.push(new AngleConstraint(composite.abdomen, composite.thorax, composite.head, 0.4));
+		
 		
 		// legs
 		for (i=0;i<4;++i) {
@@ -42,27 +54,33 @@
 			
 			var len = composite.particles.length;
 			
-			composite.constraints.push(new DistanceConstraint(composite.particles[len-2], composite.particles[0], legSeg1Stiffness));
-			composite.constraints.push(new DistanceConstraint(composite.particles[len-1], composite.particles[0], legSeg1Stiffness));
+			composite.constraints.push(new DistanceConstraint(composite.particles[len-2], composite.thorax, legSeg1Stiffness));
+			composite.constraints.push(new DistanceConstraint(composite.particles[len-1], composite.thorax, legSeg1Stiffness));
 			
 			
-			composite.particles.push(new Particle(composite.particles[len-2].pos.add((new Vec2(20,(i-1.5)*30)).normal().mutableScale(20))));
-			composite.particles.push(new Particle(composite.particles[len-1].pos.add((new Vec2(-20,(i-1.5)*30)).normal().mutableScale(20))));
+			var lenCoef = 1;
+			if (i == 1 || i == 2)
+				lenCoef = 0.7;
+			else if (i == 3)
+				lenCoef = 0.9;
+			
+			composite.particles.push(new Particle(composite.particles[len-2].pos.add((new Vec2(20,(i-1.5)*30)).normal().mutableScale(20*lenCoef))));
+			composite.particles.push(new Particle(composite.particles[len-1].pos.add((new Vec2(-20,(i-1.5)*30)).normal().mutableScale(20*lenCoef))));
 			
 			len = composite.particles.length;
 			composite.constraints.push(new DistanceConstraint(composite.particles[len-4], composite.particles[len-2], legSeg2Stiffness));
 			composite.constraints.push(new DistanceConstraint(composite.particles[len-3], composite.particles[len-1], legSeg2Stiffness));
 			
-			composite.particles.push(new Particle(composite.particles[len-2].pos.add((new Vec2(20,(i-1.5)*50)).normal().mutableScale(20))));
-			composite.particles.push(new Particle(composite.particles[len-1].pos.add((new Vec2(-20,(i-1.5)*50)).normal().mutableScale(20))));
+			composite.particles.push(new Particle(composite.particles[len-2].pos.add((new Vec2(20,(i-1.5)*50)).normal().mutableScale(20*lenCoef))));
+			composite.particles.push(new Particle(composite.particles[len-1].pos.add((new Vec2(-20,(i-1.5)*50)).normal().mutableScale(20*lenCoef))));
 			
 			len = composite.particles.length;
 			composite.constraints.push(new DistanceConstraint(composite.particles[len-4], composite.particles[len-2], legSeg3Stiffness));
 			composite.constraints.push(new DistanceConstraint(composite.particles[len-3], composite.particles[len-1], legSeg3Stiffness));
 			
 			
-			var rightFoot = new Particle(composite.particles[len-2].pos.add((new Vec2(20,(i-1.5)*100)).normal().mutableScale(5)));
-			var leftFoot = new Particle(composite.particles[len-1].pos.add((new Vec2(-20,(i-1.5)*100)).normal().mutableScale(5)))
+			var rightFoot = new Particle(composite.particles[len-2].pos.add((new Vec2(20,(i-1.5)*100)).normal().mutableScale(12*lenCoef)));
+			var leftFoot = new Particle(composite.particles[len-1].pos.add((new Vec2(-20,(i-1.5)*100)).normal().mutableScale(12*lenCoef)))
 			composite.particles.push(rightFoot);
 			composite.particles.push(leftFoot);
 			
@@ -143,7 +161,7 @@
 	VerletJS.prototype.crawl = function(leg) {
 		
 		var stepRadius = 100;
-		var minStepRadius = 40;
+		var minStepRadius = 35;
 		
 		var spiderweb = this.composites[0];
 		var spider = this.composites[1];
@@ -222,43 +240,90 @@
 		// entities
 		var spiderweb = sim.spiderweb(new Vec2(width/2,height/2), Math.min(width, height)/2, 20, 7);
 
-		var spider = sim.spider(new Vec2(width/2,-300));
+		var spider = sim.spider(new Vec2(width/2,-300));		
+		
+		
+		spiderweb.drawParticles = function(ctx, composite) {
+			var i;
+			for (i in composite.particles) {
+				var point = composite.particles[i];
+				ctx.beginPath();
+				ctx.arc(point.pos.x, point.pos.y, 1.3, 0, 2*Math.PI);
+				ctx.fillStyle = "#2dad8f";
+				ctx.fill();
+			}
+		}
+			
+			
 		spider.drawConstraints = function(ctx, composite) {
 			var i;
-			for (i in composite.constraints) {
+
+			ctx.beginPath();
+			ctx.arc(spider.head.pos.x, spider.head.pos.y, 4, 0, 2*Math.PI);
+			ctx.fillStyle = "#000";
+			ctx.fill();
+			
+			ctx.beginPath();
+			ctx.arc(spider.thorax.pos.x, spider.thorax.pos.y, 4, 0, 2*Math.PI);
+			ctx.fill();
+			
+			ctx.beginPath();
+			ctx.arc(spider.abdomen.pos.x, spider.abdomen.pos.y, 8, 0, 2*Math.PI);
+			ctx.fill();
+			
+			for (i=3;i<composite.constraints.length;++i) {
 				var constraint = composite.constraints[i];
 				if (constraint instanceof DistanceConstraint) {
 					ctx.beginPath();
 					ctx.moveTo(constraint.a.pos.x, constraint.a.pos.y);
 					ctx.lineTo(constraint.b.pos.x, constraint.b.pos.y);
-					ctx.strokeStyle = "#000";
-					ctx.stroke();
-				} else {
-					constraint.draw(ctx);
+					
+					// draw legs
+					if (
+						(i >= 2 && i <= 4)
+						|| (i >= (2*9)+1 && i <= (2*9)+2)
+						|| (i >= (2*17)+1 && i <= (2*17)+2)
+						|| (i >= (2*25)+1 && i <= (2*25)+2)
+					) {
+						ctx.save();
+						constraint.draw(ctx);
+						ctx.strokeStyle = "#000";
+						ctx.lineWidth = 3;
+						ctx.stroke();
+						ctx.restore();
+					} else if (
+						(i >= 4 && i <= 6)
+						|| (i >= (2*9)+3 && i <= (2*9)+4)
+						|| (i >= (2*17)+3 && i <= (2*17)+4)
+						|| (i >= (2*25)+3 && i <= (2*25)+4)
+					) {
+						ctx.save();
+						constraint.draw(ctx);
+						ctx.strokeStyle = "#000";
+						ctx.lineWidth = 2;
+						ctx.stroke();
+						ctx.restore();
+					} else if (
+						(i >= 6 && i <= 8)
+						|| (i >= (2*9)+5 && i <= (2*9)+6)
+						|| (i >= (2*17)+5 && i <= (2*17)+6)
+						|| (i >= (2*25)+5 && i <= (2*25)+6)
+					) {
+						ctx.save();
+						ctx.strokeStyle = "#000";
+						ctx.lineWidth = 1.5;
+						ctx.stroke();
+						ctx.restore();
+					} else {
+						ctx.strokeStyle = "#000";
+						ctx.stroke();
+					}
 				}
 			}
 		}
 		
 		spider.drawParticles = function(ctx, composite) {
-			var i;
-			for (i in composite.particles) {
-				var point = composite.particles[i];
-				ctx.beginPath();
-				ctx.arc(point.pos.x, point.pos.y, 1.2, 0, 2*Math.PI);
-				ctx.fillStyle = "#ff6000";
-				ctx.fill();
-			}
 		}
-
-		sim.crawl(0);
-		sim.crawl(1);
-		sim.crawl(2);
-		sim.crawl(3);
-		sim.crawl(4);
-		sim.crawl(5);
-		sim.crawl(6);
-		sim.crawl(7);
-
 		
 		// animation loop
 		var legIndex = 0;
@@ -266,7 +331,6 @@
 			if (Math.floor(Math.random()*4) == 0) {
 				sim.crawl(((legIndex++)*3)%8);
 			}
-			
 			
 			sim.frame(16);
 			sim.draw();
