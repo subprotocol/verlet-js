@@ -36,8 +36,8 @@ function DistanceConstraint(a, b, stiffness, distance /*optional*/) {
 
 DistanceConstraint.prototype.relax = function(stepCoef) {
 	var normal = this.a.pos.sub(this.b.pos);
-	var m = normal.length();
-	normal.mutableScale(((this.distance - m)/m)*this.stiffness*stepCoef);
+	var m = normal.length2();
+	normal.mutableScale(((this.distance*this.distance - m)/m)*this.stiffness*stepCoef);
 	this.a.pos.mutableAdd(normal);
 	this.b.pos.mutableSub(normal);
 }
