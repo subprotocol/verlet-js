@@ -144,6 +144,9 @@
 				composite.constraints.push(new DistanceConstraint(composite.particles[i], composite.particles[n-1], stiffness));
 		}
 		
+		
+		composite.constraints.push(new DistanceConstraint(composite.particles[0], composite.particles[segments-1], stiffness));
+		
 		for (c in composite.constraints)
 			composite.constraints[c].distance *= tensor;
 
