@@ -12,10 +12,10 @@ You may use verlet-js under the terms of the MIT License (See [LICENSE](LICENSE)
 
 Examples
 --------
-1. Shapes
-2. Angular constraints
+1. Shapes (verlet-js Hello world)
+2. Fractal Trees
 3. Cloth
-4. Spider web
+4. Spiderweb
 
 
 Code Layout
