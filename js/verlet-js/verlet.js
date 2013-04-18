@@ -82,7 +82,8 @@ var VerletJS = function(width, height, canvas) {
 	
 	// simulation params
 	this.gravity = new Vec2(0,0.2);
-	this.friction = 0.8;
+	this.friction = 0.99;
+	this.groundFriction = 0.8;
 	
 	// holds composite entities
 	this.composites = [];
@@ -111,14 +112,14 @@ VerletJS.prototype.frame = function(step) {
 			var particles = this.composites[c].particles;
 			
 			// calculate velocity
-			var velocity = particles[i].pos.sub(particles[i].lastPos);
+			var velocity = particles[i].pos.sub(particles[i].lastPos).scale(this.friction);
 		
 			// ground friction
 			if (particles[i].pos.y >= this.height-1 && velocity.length2() > 0.000001) {
 				var m = velocity.length();
 				velocity.x /= m;
 				velocity.y /= m;
-				velocity.mutableScale(m*this.friction);
+				velocity.mutableScale(m*this.groundFriction);
 			}
 		
 			// save last good state
