@@ -5,13 +5,27 @@
 	<meta name="author" content="Sub Protocol" />
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
+	<link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="../js/verlet-js/vec2.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/constraint.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/verlet.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/objects.js"></script>
 </head>
 <body>
-	<canvas id="scratch" style="width: 500px; height: 300px;"></canvas>
+	<div id="header">
+		<h1><a href="../">verlet-js</a> / <em>Shapes</em></h1>
+		<p>
+			<h4>Author</h4>
+			<a href="http://subprotocol.com/">Sub Protocol</a>
+			
+			<h4>Summary</h4>
+			
+			This is the <i>hello world</i> of Verlet-JS. Simple shapes generated using VerletJS.prototype.tire(origin, radius, segments, spokeStiffness, treadStiffness). Also demonstrating various constraint stiffness coefficients. All objects are draggable.
+			<h4>Source Code</h4>
+			<a href="https://github.com/subprotocol/verlet-js/blob/master/examples/shapes.html">View on GitHub</a>
+		</p>
+	</div>
+	<canvas id="scratch" style="width: 800px; height: 500px;"></canvas>
 	<script type="text/javascript">
 
 	window.onload = function() {
@@ -29,15 +43,16 @@
 
 		// simulation
 		var sim = new VerletJS(width, height, canvas);
+		sim.friction = 1;
 		
 		// entities
 		var segment = sim.lineSegments([new Vec2(20,10), new Vec2(40,10), new Vec2(60,10), new Vec2(80,10), new Vec2(100,10)], 0.02);
 		var pin = segment.pin(0);
 		var pin = segment.pin(4);
 		
-		var tire1 = sim.tire(new Vec2(100,50), 50, 30, 0.3, 0.9);
-		var tire2 = sim.tire(new Vec2(250,50), 70, 7, 0.1, 0.2);
-		var tire3 = sim.tire(new Vec2(400,50), 70, 3, 1, 1);
+		var tire1 = sim.tire(new Vec2(200,50), 50, 30, 0.3, 0.9);
+		var tire2 = sim.tire(new Vec2(400,50), 70, 7, 0.1, 0.2);
+		var tire3 = sim.tire(new Vec2(600,50), 70, 3, 1, 1);
 
 		// animation loop
 		var loop = function() {
@@ -51,5 +66,9 @@
 	
 	
 	</script>
+	<div id="footer">
+		Copyright 2013 Sub Protocol and other contributors.
+		<br/><a href="http://subprotocol.com/">http://subprotocol.com/</a>
+	</div>
 </body>
 </html>

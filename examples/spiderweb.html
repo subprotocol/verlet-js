@@ -5,12 +5,32 @@
 	<meta name="author" content="Sub Protocol" />
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
+	<link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="../js/verlet-js/vec2.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/constraint.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/verlet.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/objects.js"></script>
 </head>
 <body>
+	<div id="header">
+		<h1><a href="../">verlet-js</a> / <em>Spiderweb</em></h1>
+		<p>
+			<h4>Author</h4>
+			<a href="http://subprotocol.com/">Sub Protocol</a>
+			
+			<h4>Summary</h4>
+			This web was spun using sinusoidal functions, distance tensioners, and pin constraints to hold it all up.
+			
+			Initially the spider was really good at playing <i>Twister</i> by itself (too good), and not so much crawling.
+			
+			My solution to help the spider crawl was to create a quadrant off the spiders origin and axis.  Each leg is designated a quadrant (2 legs per quadrant) that the spider steps into.
+			
+			The spider can be pulled off the web.
+			
+			<h4>Source Code</h4>
+			<a href="https://github.com/subprotocol/verlet-js/blob/master/examples/spiderweb.html">View on GitHub</a>
+		</p>
+	</div>
 	<canvas id="scratch" style="width: 800px; height: 500px;"></canvas>
 	<script type="text/javascript">
 
@@ -345,5 +365,9 @@
 	
 	
 	</script>
+	<div id="footer">
+		Copyright 2013 Sub Protocol and other contributors.
+		<br/><a href="http://subprotocol.com/">http://subprotocol.com/</a>
+	</div>
 </body>
 </html>

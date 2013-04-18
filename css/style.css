@@ -1,12 +1,94 @@
 
 body {
 	background: #e4e6e8;
+	background: -moz-linear-gradient(top,  #ffffff 0%, #e4e8ee 20%, #e4e8ee 80%, #ffffff 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(20%,#e4e8ee), color-stop(80%,#e4e8ee), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#e4e8ee 20%,#e4e8ee 80%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#e4e8ee 20%,#e4e8ee 80%,#ffffff 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#e4e8ee 20%,#e4e8ee 80%,#ffffff 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#e4e8ee 20%,#e4e8ee 80%,#ffffff 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+
+	color: #969ba3;
+	font-family: "Libre Baskerville", sans-serif;
+	font-weight: 400;
+	line-height: 1.2em;
 }
+
+a {
+	color: #26ae90;
+}
+
+a:hover {
+	color: #0b6b6a;
+}
+
+#header {
+	width: 800px;
+	margin: 0px auto;
+	font-size: 10pt;
+}
+
+h1 {
+	display: block;
+	font-weight: 700;
+	margin: 50px 0px 0px 0px;
+	padding-bottom: 3px;
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+	text-shadow: 1px 1px 0px #fff;
+}
+
+h1:after {
+	content: "";
+	display: block;
+	padding-bottom: 20px;
+	border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+h1 a {
+	color: #969ba3;
+	text-decoration: none;
+}
+
+h1 a:hover {
+	color: #585a5d;
+	text-decoration: none;
+}
+
+h1 em {
+	color: #444;
+	font-style: normal;
+}
+
+
+
+h4 {
+	color: #444;
+	font-weight: 700;
+	font-size: 12pt;
+	margin: 20px 0px 0px 0px;
+}
+
 
 canvas {
 	display: block;
-	margin: 50px auto;
+	margin: 34px auto;
 	background: #fff;
 	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.1);
 }
 
+
+#footer {
+	font-size: 10pt;
+	border-top: 1px solid rgba(0,0,0,0.05);
+	padding-top: 3px;
+	width: 800px;
+	margin: 0px auto 100px auto;
+}
+
+#footer:before {
+	content: "";
+	display: block;
+	padding-top: 20px;
+	border-top: 1px solid rgba(0,0,0,0.05);
+}

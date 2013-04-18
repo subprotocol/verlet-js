@@ -5,12 +5,26 @@
 	<meta name="author" content="Sub Protocol" />
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen, projection" />
+	<link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="../js/verlet-js/vec2.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/constraint.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/verlet.js"></script>
 	<script type="text/javascript" src="../js/verlet-js/objects.js"></script>
 </head>
 <body>
+	<div id="header">
+		<h1><a href="../">verlet-js</a> / <em>Fractal Tree</em></h1>
+		<p>
+			<h4>Author</h4>
+			<a href="http://subprotocol.com/">Sub Protocol</a>
+			
+			<h4>Summary</h4>
+			Recursively generated fractal tree demonstrating both distance and angular constraints. 
+			
+			<h4>Source Code</h4>
+			<a href="https://github.com/subprotocol/verlet-js/blob/master/examples/tree.html">View on GitHub</a>
+		</p>
+	</div>
 	<canvas id="scratch" style="width: 800px; height: 500px;"></canvas>
 	<script type="text/javascript">
 
@@ -90,8 +104,8 @@
 		sim.friction = 0.98;
 		
 		// entities
-		var tree1 = sim.tree(new Vec2(width/4,height-30), 5, 70, 0.95, (Math.PI/2)/3);
-		var tree2 = sim.tree(new Vec2(width - width/4,height-30), 5, 70, 0.95, (Math.PI/2)/3);
+		var tree1 = sim.tree(new Vec2(width/4,height-120), 5, 70, 0.95, (Math.PI/2)/3);
+		var tree2 = sim.tree(new Vec2(width - width/4,height-120), 5, 70, 0.95, (Math.PI/2)/3);
 		
 		tree2.drawParticles = function(ctx, composite) {
 			var i;
@@ -142,5 +156,9 @@
 	
 	
 	</script>
+	<div id="footer">
+		Copyright 2013 Sub Protocol and other contributors.
+		<br/><a href="http://subprotocol.com/">http://subprotocol.com/</a>
+	</div>
 </body>
 </html>
