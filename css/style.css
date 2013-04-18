@@ -23,6 +23,14 @@ a:hover {
 	color: #0b6b6a;
 }
 
+b {
+	color: #696e76;
+}
+
+li {
+	margin: 4px 0px;
+}
+
 #header {
 	width: 800px;
 	margin: 0px auto;
@@ -79,7 +87,8 @@ canvas {
 
 
 #footer {
-	font-size: 10pt;
+	line-height: 1.5em;
+	font-size: 8pt;
 	border-top: 1px solid rgba(0,0,0,0.05);
 	padding-top: 3px;
 	width: 800px;

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Verlet-js</title>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection" />
+	<link href='http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700,400italic' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<div id="header">
+		<h1>verlet-js</h1>
+		<p>
+			<h4>About</h4>
+			verlet-js a simple <i>Verlet integration</i> physics engine written in javascript by <a href="http://subprotocol.com/">Sub Protocol</a>.  Verlet is pronounced 'ver-ley'.
+			
+			<h4>Examples</h4>
+			<ol>
+				<li><a href="examples/shapes.html">Shapes (Hello world)</a></li>
+				<li><a href="examples/tree.html">Fractal Trees</a></li>
+				<li><a href="examples/cloth.html">Cloth</a></li>
+				<li><a href="examples/spiderweb.html">Spiderweb</a></li>
+			</ol>
+			
+			<h4>Features</h4>
+			The following is the entity hierarchy used within verlet-js:
+			<ul>
+				<li><b>Simulation:</b> Root object that holds composite entities and drives all physics and animation within a scene.</li>
+				<li><b>Composites:</b> A high level object used within the scene (ball, bridge, cloth, etc..)</li>
+				<li><b>Particles:</b> Just a point in space that responds to gravity.</li>
+				<li>
+					<b>Constraints:</b> Links particles together so they can interact with each other.
+					<ol>
+						<li><b>Pin:</b> Binds a particle to a static/fixes position in space.</li>
+						<li><b>Distance:</b> Binds two particles together by a fixed linear distance.</li>
+						<li><b>Angle:</b> Binds 3 particles to each other by an acute angle.</li>
+					</ol>
+				</li>
+			</ul>
+			
+			<h4>License</h4>
+			You may use verlet-js under the terms of the very permissive MIT License.
+			
+			<h4>Source Code</h4>
+			<a href="https://github.com/subprotocol/verlet-js">View project on GitHub</a>
+
+		</p>
+	</div>
+
+	<div id="footer">
+		Copyright 2013 Sub Protocol and other contributors.
+		<br/><a href="http://subprotocol.com/">http://subprotocol.com/</a>
+	</div>
+</body>
+</html>
