@@ -27,6 +27,10 @@ b {
 	color: #696e76;
 }
 
+ul {
+	list-style: square;
+}
+
 li {
 	margin: 4px 0px;
 }
