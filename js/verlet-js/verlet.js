@@ -59,8 +59,18 @@ var VerletJS = function(width, height, canvas) {
 		if (particle.pos.y > this.height-1)
 			particle.pos.y = this.height-1;
 		
-		if (particle.pos.x < 0)
-			particle.pos.x = 0;
+		if (particle.pos.x < 0) {
+            var vx = particle.pos.x - particle.lastPos.x;
+            var vy = particle.pos.y - particle.lastPos.y;
+            if(vx == 0) {
+                particle.pos.x = 0;
+            } else {
+                t = -particle.lastPos.x/vx;
+                particle.pos.x = particle.lastPos.x + t*vx;
+                particle.pos.y = particle.lastPos.y + t*vy;   
+            }
+
+        }
 
 		if (particle.pos.x > this.width-1)
 			particle.pos.x = this.width-1;
