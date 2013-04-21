@@ -44,6 +44,34 @@ Particle.prototype.draw = function(ctx) {
 	ctx.fill();
 }
 
+/**
+*
+* Computes time of intersection of a particle with a wall
+*
+* @param {Vec2} line    wall's root position
+* @param {Vec2} p       particle's position
+* @param {Vec2} dir     walls's direction
+* @param {Vec2} v       particle's velocity
+*/
+var intersectionTime = function(wall, p, dir, v) {
+    if (dir.x != 0) {
+        var denominator = dir.y * v.x / dir.x - v.y;
+        if (denominator == 0) return undefined; // Movement is parallel to wall
+        var numerator = wall.y + dir.y * (p.x - wall.x) / dir.x - p.y;
+        return numerator / -denominator;
+    } else { 
+        if (v.x == 0) return undefined; // parallel again
+        var denominator = v.x;
+        var numerator = wall.x - p.x;
+        return numerator / denominator;
+    }
+}
+
+var intersectionPoint = function(wall, p, dir, v) {
+    var t = intersectionTime(wall, p, dir, v);
+    return new Vec2(p.x + v.x * t, p.y + v.y * t);
+}
+
 var VerletJS = function(width, height, canvas) {
 	this.width = width;
 	this.height = height;
@@ -56,24 +84,21 @@ var VerletJS = function(width, height, canvas) {
 	this.highlightColor = "#4f545c";
 	
 	this.bounds = function (particle) {
-		if (particle.pos.y > this.height-1)
-			particle.pos.y = this.height-1;
+        var v = particle.pos.sub(particle.lastPos);
+		if (particle.pos.y > this.height-1) {
+            particle.pos.mutableSet(
+                intersectionPoint(new Vec2(0,this.height-1), particle.pos, new Vec2(1,0), v));
+        }
 		
 		if (particle.pos.x < 0) {
-            var vx = particle.pos.x - particle.lastPos.x;
-            var vy = particle.pos.y - particle.lastPos.y;
-            if(vx == 0) {
-                particle.pos.x = 0;
-            } else {
-                t = -particle.lastPos.x/vx;
-                particle.pos.x = particle.lastPos.x + t*vx;
-                particle.pos.y = particle.lastPos.y + t*vy;   
-            }
-
+            particle.pos.mutableSet(
+                intersectionPoint(new Vec2(0,0), particle.pos, new Vec2(0,1), v));
         }
 
-		if (particle.pos.x > this.width-1)
-			particle.pos.x = this.width-1;
+		if (particle.pos.x > this.width-1) {
+			particle.pos.mutableSet(
+                intersectionPoint(new Vec2(this.width-1,0), particle.pos, new Vec2(0,1), v));
+        }
 	}
 	
 	var _this = this;
@@ -237,4 +262,3 @@ VerletJS.prototype.nearestEntity = function() {
 	
 	return entity;
 }
-
