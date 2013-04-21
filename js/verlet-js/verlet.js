@@ -55,10 +55,10 @@ Particle.prototype.draw = function(ctx) {
 */
 var intersectionTime = function(wall, p, dir, v) {
     if (dir.x != 0) {
-        var denominator = dir.y * v.x / dir.x - v.y;
+        var denominator = v.y - dir.y * v.x / dir.x ;
         if (denominator == 0) return undefined; // Movement is parallel to wall
         var numerator = wall.y + dir.y * (p.x - wall.x) / dir.x - p.y;
-        return numerator / -denominator;
+        return numerator / denominator;
     } else { 
         if (v.x == 0) return undefined; // parallel again
         var denominator = v.x;
@@ -87,7 +87,7 @@ var VerletJS = function(width, height, canvas) {
         var v = particle.pos.sub(particle.lastPos);
 		if (particle.pos.y > this.height-1) {
             particle.pos.mutableSet(
-                intersectionPoint(new Vec2(0,this.height-1), particle.pos, new Vec2(1,0), v));
+                intersectionPoint(new Vec2(0,this.height-1), particle.lastPos, new Vec2(1,0), v));
         }
 		
 		if (particle.pos.x < 0) {
