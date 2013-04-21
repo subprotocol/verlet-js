@@ -54,6 +54,18 @@ var VerletJS = function(width, height, canvas) {
 	this.draggedEntity = null;
 	this.selectionRadius = 20;
 	this.highlightColor = "#4f545c";
+	
+	this.bounds = function (particle) {
+		if (particle.pos.y > this.height-1)
+			particle.pos.y = this.height-1;
+		
+		if (particle.pos.x < 0)
+			particle.pos.x = 0;
+
+		if (particle.pos.x > this.width-1)
+			particle.pos.x = this.width-1;
+	}
+	
 	var _this = this;
 	
 	// prevent context menu
@@ -149,16 +161,8 @@ VerletJS.prototype.frame = function(step) {
 	// bounds checking
 	for (c in this.composites) {
 		var particles = this.composites[c].particles;
-		for (i in particles) {
-			if (particles[i].pos.y > this.height)
-				particles[i].pos.y = this.height;
-			
-			if (particles[i].pos.x < 0)
-				particles[i].pos.x = 0;
-
-			if (particles[i].pos.x > this.width-1)
-				particles[i].pos.x = this.width-1;
-		}
+		for (i in particles)
+			this.bounds(particles[i]);
 	}
 }
 
