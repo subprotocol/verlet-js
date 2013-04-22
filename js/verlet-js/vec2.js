@@ -91,8 +91,8 @@ Vec2.prototype.equals = function(v) {
 	return this.x == v.x && this.y == v.y;
 }
 
-Vec2.prototype.epislonEquals = function(v, epislon) {
-	return Math.abs(this.x - v.x) <= epislon && Math.abs(this.y - v.y) <= epislon;
+Vec2.prototype.epsilonEquals = function(v, epsilon) {
+	return Math.abs(this.x - v.x) <= epsilon && Math.abs(this.y - v.y) <= epsilon;
 }
 
 Vec2.prototype.length = function(v) {
@@ -148,8 +148,8 @@ function test_Vec2() {
 	};
 	
 	assert("equality", (new Vec2(5,3).equals(new Vec2(5,3))));
-	assert("epislon equality", (new Vec2(1,2).epislonEquals(new Vec2(1.01,2.02), 0.03)));
-	assert("epislon non-equality", !(new Vec2(1,2).epislonEquals(new Vec2(1.01,2.02), 0.01)));
+	assert("epsilon equality", (new Vec2(1,2).epsilonEquals(new Vec2(1.01,2.02), 0.03)));
+	assert("epsilon non-equality", !(new Vec2(1,2).epsilonEquals(new Vec2(1.01,2.02), 0.01)));
 	assert("addition", (new Vec2(1,1)).add(new Vec2(2, 3)).equals(new Vec2(3, 4)));
 	assert("subtraction", (new Vec2(4,3)).sub(new Vec2(2, 1)).equals(new Vec2(2, 2)));
 	assert("multiply", (new Vec2(2,4)).mul(new Vec2(2, 1)).equals(new Vec2(4, 4)));
@@ -167,7 +167,7 @@ function test_Vec2() {
 	assert("dist2", (new Vec2(2,4)).dist2(new Vec2(3,5)) == 2);
 
 	var normal = (new Vec2(2,4)).normal()
-	assert("normal", Math.abs(normal.length() - 1.0) <= 0.00001 && normal.epislonEquals(new Vec2(0.4472, 0.89443), 0.0001));
+	assert("normal", Math.abs(normal.length() - 1.0) <= 0.00001 && normal.epsilonEquals(new Vec2(0.4472, 0.89443), 0.0001));
 	assert("dot", (new Vec2(2,3)).dot(new Vec2(4,1)) == 11);
 	assert("angle", (new Vec2(0,-1)).angle(new Vec2(1,0))*(180/Math.PI) == 90);
 	assert("angle2", (new Vec2(1,1)).angle2(new Vec2(1,0), new Vec2(2,1))*(180/Math.PI) == 90);
