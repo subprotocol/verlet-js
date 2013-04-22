@@ -82,9 +82,10 @@ var VerletJS = function(width, height, canvas) {
 	this.draggedEntity = null;
 	this.selectionRadius = 20;
 	this.highlightColor = "#4f545c";
-	
+	var v = new Vec2();
 	this.bounds = function (particle) {
-        var v = particle.pos.sub(particle.lastPos);
+        v.mutableSet(particle.pos);
+        v.mutableSub(particle.lastPos);
 		if (particle.pos.y > this.height-1) {
             particle.pos.mutableSet(
                 intersectionPoint(new Vec2(0,this.height-1), particle.lastPos, new Vec2(1,0), v));
