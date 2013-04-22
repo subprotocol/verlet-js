@@ -1,5 +1,5 @@
 verlet-js
-=========
+-----------
 
 A simple Verlet (pronounced 'ver-ley') physics engine written in javascript.
 
