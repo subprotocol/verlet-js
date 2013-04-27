@@ -86,9 +86,14 @@ canvas {
 	margin: 34px auto;
 	background: #fff;
 	box-shadow: 2px 2px 8px 0px rgba(0,0,0,0.1);
+	
+	/* disable selection of canvas */
 	-moz-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
+	-webkit-user-select: none;
+	-o-user-select:none;
+	-ms-user-select:none;
+	-khtml-user-select:none;
+	user-select: none;
 }
 
 
