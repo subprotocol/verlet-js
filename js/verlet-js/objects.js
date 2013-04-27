@@ -32,13 +32,6 @@ VerletJS.prototype.point = function(pos) {
 	return composite;
 }
 
-VerletJS.prototype.point = function(v, stiffness) {
-	var composite = new this.Composite();
-	composite.particles.push(new Particle(v));
-	this.composites.push(composite);
-	return composite;
-}
-
 VerletJS.prototype.lineSegments = function(vertices, stiffness) {
 	var i;
 	
