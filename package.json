@@ -1,5 +1,5 @@
 {
-	"name": "verlet-js",
+	"name": "verlet",
 	"version": "1.0.0",
 	"description": "simple 2d physics for js.",
 	"main": "index.js",
