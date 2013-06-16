@@ -24,3 +24,13 @@ Code Layout
 2. js/verlet-js/constraint.js: _constraint code_
 3. js/verlet-js/verlet.js: _verlet-js engine_
 4. js/verlet-js/objects.js: _shapes and objects (triangles, circles, tires..)_
+
+Build for npm
+-------------
+
+``` js
+npm build
+# or
+browserify ./lib/dist.js --debug > ./dist.js
+```
+
