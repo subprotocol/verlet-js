@@ -2,18 +2,18 @@
 	"name": "verlet",
 	"version": "1.0.0",
 	"description": "simple 2d physics for js.",
-	"main": "index.js",
+	"main": "./lib/verlet",
 	"directories": {
 		"example": "examples"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "browserify lib/dist.js --debug > ./dist.js"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/subprotocol/verlet-js.git"
 	},
-	"main": "./lib/verlet",
 	"keywords": [
 		"physics",
 		"2d",
@@ -28,5 +28,8 @@
 	},
 	"dependencies": {
 		"vec2": "~1.3.0"
+	},
+	"devDependencies": {
+		"browserify": "~2.18.1"
 	}
 }
