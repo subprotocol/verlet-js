@@ -29,7 +29,7 @@ Build for npm
 -------------
 
 ``` js
-npm build
+npm run build
 # or
 browserify ./lib/dist.js --debug > ./dist.js
 ```
