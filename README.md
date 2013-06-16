@@ -30,7 +30,5 @@ Build for npm
 
 ``` js
 npm run build
-# or
-browserify ./lib/dist.js --debug > ./dist.js
 ```
 
