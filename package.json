@@ -1,0 +1,36 @@
+{
+	"name": "verlet",
+	"version": "1.0.0",
+	"description": "simple 2d physics for js.",
+	"main": "./lib/verlet",
+	"directories": {
+		"example": "examples"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "V=`node -e \"console.log(require('./package.json').version)\"`; browserify lib/dist.js --debug | tee ./js/verlet-$V.js | uglifyjs > ./js/verlet-$V.min.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/subprotocol/verlet-js.git"
+	},
+	"keywords": [
+		"physics",
+		"2d",
+		"verlet"
+	],
+	"author": "subprotocol",
+	"license": "BSD",
+	"readmeFilename": "README.md",
+	"gitHead": "283d23fa020d5147e95e84c5ff3541c17ea2abe5",
+	"bugs": {
+		"url": "https://github.com/subprotocol/verlet-js/issues"
+	},
+	"dependencies": {
+		"vec2": "~1.3.0"
+	},
+	"devDependencies": {
+		"browserify": "~2.18.1",
+		"uglify-js": "~2.3.6"
+	}
+}
