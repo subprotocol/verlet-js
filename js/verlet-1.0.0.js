@@ -504,14 +504,14 @@ function VerletJS(width, height, canvas) {
 		e.preventDefault();
 	};
 	
-    this.canvas.onclick = function(e) {
-    	var nearest = _this.nearestEntity();
-        if (nearest) {
-        	var event = new CustomEvent("entityClicked");
-            event.entity = nearest;
-            this.dispatchEvent(event);
-        }
-    };
+	this.canvas.onclick = function(e) {
+		var nearest = _this.nearestEntity();
+		if (nearest) {
+			var event = new CustomEvent("entityClicked");
+			event.entity = nearest;
+			this.dispatchEvent(event);
+		}
+	};
 
 	this.canvas.onmousedown = function(e) {
 		_this.mouseDown = true;
