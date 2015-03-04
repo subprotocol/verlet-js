@@ -610,8 +610,10 @@ VerletJS.prototype.draw = function() {
 			this.composites[c].drawConstraints(this.ctx, this.composites[c]);
 		} else {
 			var constraints = this.composites[c].constraints;
-			for (i in constraints)
-				constraints[i].draw(this.ctx);
+			for (i in constraints) {
+				var constraint = constraints[i];
+				if (constraint.draw) constraint.draw(this.ctx);
+			}
 		}
 		
 		// draw particles
@@ -619,8 +621,10 @@ VerletJS.prototype.draw = function() {
 			this.composites[c].drawParticles(this.ctx, this.composites[c]);
 		} else {
 			var particles = this.composites[c].particles;
-			for (i in particles)
-				particles[i].draw(this.ctx);
+			for (i in particles) {
+				var particle = particles[i];
+				if (particle.draw) particle.draw(this.ctx);
+			}
 		}
 	}
 
