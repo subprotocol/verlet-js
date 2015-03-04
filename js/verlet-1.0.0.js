@@ -507,7 +507,7 @@ function VerletJS(width, height, canvas) {
 	this.canvas.onmousedown = function(e) {
 		_this.mouseDown = true;
 		var nearest = _this.nearestEntity();
-		if (nearest) {
+		if (nearest && (nearest.a ? !nearest.a.fixed : !nearest.fixed)) {
 			_this.draggedEntity = nearest;
 		}
 	};
@@ -626,7 +626,7 @@ VerletJS.prototype.draw = function() {
 
 	// highlight nearest / dragged entity
 	var nearest = this.draggedEntity || this.nearestEntity();
-	if (nearest) {
+	if (nearest && (nearest.a ? !nearest.a.fixed : !nearest.fixed)) { // highlight only dynamic entities
 		this.ctx.beginPath();
 		this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
 		this.ctx.strokeStyle = this.highlightColor;
