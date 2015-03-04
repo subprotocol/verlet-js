@@ -604,6 +604,13 @@ VerletJS.prototype.draw = function() {
 	
 	this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);  
 	
+	// nearest / dragged entity
+	var nearest = this.draggedEntity || this.nearestEntity();
+	// draw highlight in background (if defined)
+	if (nearest && nearest.drawBgHighlight) {
+		nearest.drawBgHighlight(this.ctx);
+	}
+
 	for (c in this.composites) {
 		// draw constraints
 		if (this.composites[c].drawConstraints) {
@@ -624,13 +631,16 @@ VerletJS.prototype.draw = function() {
 		}
 	}
 
-	// highlight nearest / dragged entity
-	var nearest = this.draggedEntity || this.nearestEntity();
 	if (nearest) {
-		this.ctx.beginPath();
-		this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
-		this.ctx.strokeStyle = this.highlightColor;
-		this.ctx.stroke();
+		if (nearest.drawFgHighlight) { // draw highlight in foreground (if defined)
+			nearest.drawFgHighlight(this.ctx);
+		}
+		else { // default highlight
+			this.ctx.beginPath();
+			this.ctx.arc(nearest.pos.x, nearest.pos.y, 8, 0, 2*Math.PI);
+			this.ctx.strokeStyle = this.highlightColor;
+			this.ctx.stroke();
+		}
 	}
 }
 
