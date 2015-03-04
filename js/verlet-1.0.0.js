@@ -512,7 +512,8 @@ function VerletJS(width, height, canvas) {
 		}
 	};
 	
-	this.canvas.onmouseup = function(e) {
+	this.canvas.onmouseup =
+	this.canvas.onmouseleave = function(e) {
 		_this.mouseDown = false;
 		_this.draggedEntity = null;
 	};
