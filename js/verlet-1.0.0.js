@@ -504,6 +504,15 @@ function VerletJS(width, height, canvas) {
 		e.preventDefault();
 	};
 	
+	this.canvas.onclick = function(e) {
+		var nearest = _this.nearestEntity();
+		if (nearest) {
+			var event = new CustomEvent("entityClicked");
+			event.entity = nearest;
+			this.dispatchEvent(event);
+		}
+	};
+
 	this.canvas.onmousedown = function(e) {
 		_this.mouseDown = true;
 		var nearest = _this.nearestEntity();
@@ -639,13 +648,16 @@ VerletJS.prototype.nearestEntity = function() {
 	var d2Nearest = 0;
 	var entity = null;
 	var constraintsNearest = null;
-	
+	var selectionRadiusSquare = this.selectionRadius * this.selectionRadius;
+
 	// find nearest point
-	for (c in this.composites) {
+	var compositesLength = this.composites.length;
+	for (var c = 0; c < compositesLength; ++c) {
 		var particles = this.composites[c].particles;
-		for (i in particles) {
+		var particlesLength = particles.length;
+		for (var i = 0; i < particlesLength; ++i) {
 			var d2 = particles[i].pos.dist2(this.mouse);
-			if (d2 <= this.selectionRadius*this.selectionRadius && (entity == null || d2 < d2Nearest)) {
+			if (d2 <= selectionRadiusSquare && (entity == null || d2 < d2Nearest)) {
 				entity = particles[i];
 				constraintsNearest = this.composites[c].constraints;
 				d2Nearest = d2;
@@ -654,9 +666,11 @@ VerletJS.prototype.nearestEntity = function() {
 	}
 	
 	// search for pinned constraints for this entity
-	for (i in constraintsNearest)
-		if (constraintsNearest[i] instanceof PinConstraint && constraintsNearest[i].a == entity)
+	for (var i = constraintsNearest.length-1; i >= 0; --i)
+		if (constraintsNearest[i] instanceof PinConstraint && constraintsNearest[i].a == entity) {
 			entity = constraintsNearest[i];
+			break;
+		}
 	
 	return entity;
 }
