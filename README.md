@@ -25,7 +25,7 @@ Code Layout
 3. js/verlet-js/verlet.js: _verlet-js engine_
 4. js/verlet-js/objects.js: _shapes and objects (triangles, circles, tires..)_
 
-Build for npm
+Build with npm
 -------------
 
 ``` js
